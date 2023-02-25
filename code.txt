@@ -1,0 +1,469 @@
+1--
+void main() {
+     TRISB = 0x00; // set port as output
+     PORTB= 0x00;  // Initialize all portb as off state like variable
+     
+     while(1)  //infinite loop
+     {
+       portb.f0=0xff; // portb on kre dilam RB0
+       portb.f1=0xff;   //RB1
+       portb.f2=0xff;  //RB2
+       delay_ms(400);
+       portb.f0=0x00; // for off again
+       portb.f1=0x00; // for off again  1
+       portb.f2=0x00; // for off again  2
+       delay_ms(400); //after 1000 mili second
+       
+       //acta kre on rakhar jjonne--------------------------------
+        portb.f0=0xff;
+        delay_ms(400);
+        portb.f0=0x00;
+        
+        portb.f1=0xff;
+        delay_ms(400);
+        portb.f1=0x00;
+        
+        portb.f2=0xff;
+        delay_ms(400);
+        portb.f2=0x00;
+     }
+
+
+}
+
+2---
+char array[]={0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90};
+void main() {
+     int i=0;
+     TRISB=0x00; // set port as output
+     PORTB=0x00; // initialize all portb
+
+     while(1)
+     {
+        portb=array[i];
+        delay_ms(1000);
+        i=i+1;
+        if(i==10)
+           i=0;
+     }
+
+}
+
+3---
+//create a variable th   at will hold the ADc value
+int valADC;
+//create a char array
+char x[4];
+void main()
+{
+     //initialize UARt
+     UART1_Init(9600);
+     //initialize ADC
+     ADC_Init();
+
+     //create a loop
+     while(1)
+     {
+         //Read ADC value in RA2
+         valADC = ADC_Read(0);
+         //convert into string/char array
+         IntToStr(valADC,x);
+         //Print
+         UART1_Write_Text("Analog value = ");
+         UART1_Write_Text(x);
+         //clear char array
+         strcpy(x,"");
+         UART1_Write(13);
+         Delay_ms(1000);
+
+     }
+}
+
+4---
+ char segment[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F};
+int i=0;
+void main() {
+     trisb=0x00;
+     trisc=0x00;
+     portb=0x00;
+     portc=0x00;
+     trisd=0xff;
+     portd=0;
+     while(1){
+        int l=0;
+        while(l<50){
+          portc.f0=0;
+          portb=segment[i/10];
+          delay_ms(10);
+          portc.f0=1;
+          //turning on second digit
+          portc.f1=0;
+          portb=segment[i%10];
+          delay_ms(10);
+           portc.f1=1;
+          l++;
+          }
+      if(portd.f0==1)
+         i++;
+      if(portd.f1==1)
+         i--;
+      if(i<0)
+         i=0;
+     }
+}
+
+5---
+void main() 
+
+{
+      TRISB=0x00;
+      TRISD=0xff;
+      portb.f0=0;
+      while(1)
+      {
+       if(portd.f0=1)
+        {  
+           portb.f0=1;
+        
+       }
+       else
+       {
+       
+          portb.f0=0;
+       }
+      
+      }
+}
+
+6---
+ int i;
+void main()
+
+{
+      TRISC=0x00;
+      TRISD=0x00;
+      while(1)
+      {
+         portc=0x00;
+         portd=0x00;
+         for(i=1;i<=125;i++){
+           PORTD=0x80;
+           PORTC=0xff;
+           delay_ms(1);
+
+           PORTD=0x40;
+           PORTC=0xff;
+           delay_ms(1);
+
+           PORTD=0x20;
+           PORTC=0x60;
+           delay_ms(1);
+
+           PORTD=0x10;
+           PORTC=0x30;
+           delay_ms(1);
+
+           PORTD = 0x08;
+           PORTC = 0x30;
+           delay_ms(1);
+
+           PORTD =0x04;
+           PORTC =0x60;
+           delay_ms(1);
+
+           PORTD = 0x02;
+           PORTC = 0xff;
+           delay_ms(1);
+
+           PORTD = 0x01;
+           PORTC = 0xff;
+           delay_ms(1);
+         }
+         portd=0x00;
+         portc=0x00;
+         delay_ms(1000);
+
+
+         for(i=0;i<125;i++)
+         {
+           PORTD=0x80;
+           PORTC=0x00;
+           delay_ms(1);
+                                                        m
+           PORTD=0x40;
+           PORTC=0x7f;
+           delay_ms(1);
+
+           PORTD=0x20;
+           PORTC=0xff;
+           delay_ms(1);
+
+           PORTD=0x10;
+           PORTC=0xcc;
+           delay_ms(1);
+
+           PORTD = 0x08;
+           PORTC = 0xcc;
+           delay_ms(1);
+
+           PORTD =0x04;
+           PORTC =0xff;
+           delay_ms(1);
+
+           PORTD = 0x02;
+           PORTC = 0x7f;
+           delay_ms(1);
+
+           PORTD = 0x01;
+           PORTC = 0x00;
+           delay_ms(1);
+
+         }
+          portd=0x00;
+         portc=0x00;
+         delay_ms(1000);
+          for(i=1;i<=125;i++){
+           PORTD=0x80;
+           PORTC=0xff;
+           delay_ms(1);
+
+           PORTD=0x40;
+           PORTC=0xff;
+           delay_ms(1);
+
+           PORTD=0x20;
+           PORTC=0x18;
+           delay_ms(1);
+
+           PORTD=0x10;
+           PORTC=0x18;
+           delay_ms(1);
+
+           PORTD = 0x08;
+           PORTC = 0x18;
+           delay_ms(1);
+
+           PORTD =0x04;
+           PORTC =0x18;
+           delay_ms(1);
+
+           PORTD = 0x02;
+           PORTC = 0xff;
+           delay_ms(1);
+
+           PORTD = 0x01;
+           PORTC = 0xff;
+           delay_ms(1);
+         }
+         portd=0x00;
+         portc=0x00;
+         delay_ms(1000);
+          for(i=1;i<=125;i++){
+           PORTD=0x80;
+           PORTC=0xc3;
+           delay_ms(1);
+
+           PORTD=0x40;
+           PORTC=0xc3;
+           delay_ms(1);
+
+           PORTD=0x20;
+           PORTC=0xc3;
+           delay_ms(1);
+
+           PORTD=0x10;
+           PORTC=0xff;
+           delay_ms(1);
+
+           PORTD = 0x08;
+           PORTC = 0xff;
+           delay_ms(1);
+
+           PORTD =0x04;
+           PORTC =0xc3;
+           delay_ms(1);
+
+           PORTD = 0x02;
+           PORTC = 0xc3;
+           delay_ms(1);
+
+           PORTD = 0x01;
+           PORTC = 0xc3;
+           delay_ms(1);
+         }
+
+         
+     }
+
+
+}
+
+7----
+//LCD module connections
+sbit LCD_RS at RB0_bit;
+sbit LCD_EN at RB1_bit;
+sbit LCD_D4 at RB2_bit;
+sbit LCD_D5 at RB3_bit;
+sbit LCD_D6 at RB4_bit;
+sbit LCD_D7 at RB5_bit;
+
+sbit LCD_RS_Direction at TRISB0_bit;
+sbit LCD_EN_Direction at TRISB1_bit;
+sbit LCD_D4_Direction at TRISB2_bit;
+sbit LCD_D5_Direction at TRISB3_bit;
+sbit LCD_D6_Direction at TRISB4_bit;
+sbit LCD_D7_Direction at TRISB5_bit;
+
+// End lcd module conection
+char display[16]="";
+
+void main() 
+{
+ unsigned int result;
+ float volt,temp;
+ 
+ trisb=0x00;
+ trisa=0xff;
+ adcon1=0x80;
+ lcd_init();
+ lcd_cmd(_lcd_clear);
+ lcd_cmd(_LCD_CURSOR_OFF);
+
+     while(1)
+     {
+             result=adc_read(0);
+             volt=result*4.88;
+             temp=volt/10;
+             
+             lcd_out(1,1,"Temp = ");
+             floattostr(temp,display);
+             lcd_out_cp(display);
+             lcd_chr(1,16,223); //print at pos(row=1,col=13) ''=223=0xdf
+             lcd_out_cp(" C"); //celcius
+     }
+ 
+
+
+}
+
+
+8---
+void main() {
+   TRISB=0x00;  //Set all output
+   portb=0x00;
+   while(1){
+      portb.f0=1;
+      delay_ms(100);
+      portb.f0=0;
+      delay_ms(100);
+   }
+}
+
+9----
+void main() 
+{
+    short duty=0;
+    TRISD=0xff;
+    TRISB=0x00;
+    portb.f0=0xff;
+    portb.f1=0x00;
+    
+    PWM1_Init(1000);
+    PWM1_Start();
+    PWM1_Set_Duty(duty);
+    
+    while(1)
+    {
+      if(RD0_bit && duty<250)
+      {
+        Delay_ms(100);
+        if(RD0_bit && duty<250)
+        {
+          duty=duty+10;
+          PWM1_Set_Duty(duty);
+        }
+      }
+         if(RD1_bit && duty>0)
+      {
+        Delay_ms(100);
+        if(RD1_bit && duty>0)
+        {
+          duty=duty-10;
+          PWM1_Set_Duty(duty);
+        }
+      }
+      Delay_ms(10);
+    }
+}
+
+
+10----
+ void servoRotate0()
+ {
+  unsigned int i;
+  for(i=0;i<50;i++)
+  {
+    portb.f0=1;
+    Delay_us(800);
+    portb.f0=0;
+    Delay_us(19200);
+  }
+ }
+   void servoRotate90()
+ {
+  unsigned int i;
+  for(i=0;i<50;i++)
+  {
+    portb.f0=1;
+    Delay_us(1500);
+    portb.f0=0;
+    Delay_us(18500);
+  }
+ }
+   void servoRotate180()
+ {
+  unsigned int i;
+  for(i=0;i<50;i++)
+  {
+    portb.f0=1;
+    Delay_us(2200);
+    portb.f0=0;
+    Delay_us(17800);
+  }
+ }
+void main() 
+{
+  TRISB=0;
+  while(1)
+  {
+    servoRotate0();
+    Delay_ms(2000);
+    servoRotate90();
+    Delay_ms(2000);
+    servoRotate180();
+    Delay_ms(2000);
+  }
+}
+
+11--
+void main() {
+  CMCON =0x07;// To turn off comparator
+  ADCON1 =0x06; // To turn off analog to digital convertors (1) not al
+  TRISB=0; //PORT B as output port
+  PORTB = 0x0F; // FIRT 4 TA HIGH AND LAST 4 TA LOW
+  do
+  {
+   PORTB = 0b00000001;
+   Delay_ms(500);
+   PORTB = 0b00000010;
+   Delay_ms(500);
+   PORTB = 0b00000100;
+   Delay_ms(500);
+   PORTB = 0b00001000;
+   Delay_ms(500);
+
+   
+  
+  }while(1);
+
+}
